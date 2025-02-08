@@ -5,7 +5,11 @@
 int main()
 {
     test_init();
-    FAIL_IF(!check_periodic_mov_avg());
-    std::cout << "all tests passed";
+    int test_correct_tries = 50;
+    while(test_correct_tries--)
+    {
+        FAIL_IF(!check_periodic_mov_avg());
+    }
+        std::cout << "all tests passed\n";
     return 0;
 }

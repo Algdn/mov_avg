@@ -9,6 +9,6 @@ void test_init();
 bool check_periodic_mov_avg();
 
 // Вспомогательные тестовые функции
-bool create_chainsaw_signal(std::vector<int>& chainsaw);
+bool create_chainsaw_signal(std::vector<int>& chainsaw, int& window);
 
 #endif // TESTFUNCTIONS_H

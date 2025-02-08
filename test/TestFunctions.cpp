@@ -13,13 +13,30 @@ bool check_periodic_mov_avg()
 {
     std::vector<int> signal;
     int window_size = 0;
-    if(!create_chainsaw_signal(signal,window_size))
+    if(!create_chainsaw_signal(signal,window_size) | !window_size)
     {
         return false;
     }
 
+    std::vector<int> signal_filtered;
+    signal_filtered.reserve(signal.size());
 
+    status ret_status = moving_average(signal, signal_filtered, window_size);
+    if(ret_status != completed)
+    {
+        return false;
+    }
 
+    signal_filtered.resize(signal_filtered.size() - window_size + 1);
+
+    for(int sample: signal_filtered) {
+        if(sample)
+        {
+            return false;
+        }
+    }
+
+    std::cout << "Test with window size " << window_size << " passed" << "\n";
     return true;
 }
 
@@ -61,6 +78,7 @@ bool create_chainsaw_signal(std::vector<int>& chainsaw, int& window)
     while (REPEATS--) {
         chainsaw.insert(chainsaw.begin(),signal_pattern.begin(),signal_pattern.end());
     }
+
     window = WINDOW_SIZE;
     return true;
 }
