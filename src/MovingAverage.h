@@ -1,0 +1,4 @@
+#ifndef MOVINGAVERAGE_H
+#define MOVINGAVERAGE_H
+
+#endif // MOVINGAVERAGE_H
