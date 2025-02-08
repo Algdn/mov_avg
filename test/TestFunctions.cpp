@@ -59,10 +59,5 @@ bool create_chainsaw_signal(std::vector<int>& chainsaw)
         chainsaw.insert(chainsaw.begin(),signal_pattern.begin(),signal_pattern.end());
     }
 
-    if(chainsaw.size() != WINDOW_SIZE * REPEATS)
-    {
-        return false;
-    }
-
     return true;
 }
