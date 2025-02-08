@@ -5,7 +5,7 @@ project(moving_average_test LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(PROJ_SOURCES main.cpp ${PROJECT_SOURCE_DIR}/test/TestFunctions.cpp)
+set(PROJ_SOURCES main.cpp ${PROJECT_SOURCE_DIR}/test/TestFunctions.cpp ${PROJECT_SOURCE_DIR}/src/MovingAverage.cpp)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/test)
 

@@ -10,10 +10,6 @@ typedef enum {
     window_size_invalid,
 } status;
 
-
 template <typename T>
-status moving_average(const std::vector<T>&in_data, std::vector<T>&out_data, const int window_size)
-{
-    return completed;
-}
+extern status moving_average(const std::vector<T>&in_data, std::vector<T>&out_data, const int window_size);
 #endif // MOVINGAVERAGE_H
