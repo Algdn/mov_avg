@@ -141,7 +141,7 @@ void speed_test_tmplt(std::vector<double>& time, std::vector<int>* window = null
     }
 
     int window_size = 2;
-    while(window_size <= 256)
+    while(window_size <= 128)
     {
         std::vector<T> out_signal(noise.size());
         auto start = std::chrono::high_resolution_clock().now();
@@ -171,9 +171,9 @@ void speed_test_tmplt(std::vector<double>& time, std::vector<int>* window = null
 }
 
 #include <sstream>
+
 template <typename T>
 std::string vectorToCsvRow(const std::vector<T>& vec, std::string& out_str, const std::string& delimiter) {
-    //...
     std::stringstream ss;
     for(size_t i = 0; i < vec.size(); ++i)
     {
