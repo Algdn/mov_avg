@@ -9,6 +9,7 @@ int main()
     while(test_correct_tries--)
     {
         FAIL_IF(!check_periodic_mov_avg());
+        FAIL_IF(!check_impulse_mov_avg());
     }
         std::cout << "all tests passed\n";
     return 0;

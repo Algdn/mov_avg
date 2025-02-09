@@ -82,3 +82,25 @@ bool create_chainsaw_signal(std::vector<int>& chainsaw, int& window)
     window = WINDOW_SIZE;
     return true;
 }
+
+bool check_impulse_mov_avg()
+{
+    const int WINDOW_SIZE = 1 << (rand() % 7);
+    std::vector<float> impulse(WINDOW_SIZE);
+    impulse[WINDOW_SIZE - 1] = 1;
+    std::vector<float> impulse_h;
+    status ret = moving_average(impulse,impulse_h,WINDOW_SIZE);
+    float ret_data = 0;
+    for(auto i: impulse_h)
+    {
+        ret_data+= i;
+    }
+
+    // Для ограничения фильтра по степеням 2 должно быть равенство.
+    if(ret_data != 1)
+    {
+        return false;
+    }
+    std::cout << "Impulse test with window size " << WINDOW_SIZE << " passed" << "\n";
+    return true;
+}
