@@ -91,12 +91,16 @@ bool check_impulse_mov_avg()
     std::vector<float> impulse_h;
     status ret = moving_average(impulse,impulse_h,WINDOW_SIZE);
     float ret_data = 0;
+    // Для ограничения фильтра по степеням 2 должно быть равенство по float.
     for(auto i: impulse_h)
     {
+        if(i != static_cast<float>(1)/WINDOW_SIZE)
+        {
+            break;
+        }
         ret_data+= i;
     }
 
-    // Для ограничения фильтра по степеням 2 должно быть равенство.
     if(ret_data != 1)
     {
         return false;
