@@ -9,7 +9,7 @@ status moving_average(const std::vector<T>&in_data, std::vector<T>&out_data, con
         return in_data_empty;
     }
 
-    if((window_size >= data_size) | (window_size < 1))
+    if((window_size > data_size) | (window_size < 1))
     {
         return window_size_invalid;
     }
