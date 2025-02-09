@@ -116,6 +116,7 @@ bool check_impulse_mov_avg()
     return true;
 }
 
+#include <chrono>
 
 void speed_test()
 {
@@ -130,7 +131,7 @@ void speed_test()
         std::normal_distribution<float> d{mean,deviation};
         auto random_value = [&d, &gen]{ return d(gen); };
 
-        const int samples = 1e5;
+        const int samples = 1e6;
         noise.reserve(samples);
         while(noise.size() < samples)
         {
@@ -142,9 +143,9 @@ void speed_test()
     while(window_size <= 256)
     {
         std::vector<float> out_signal(noise.size());
-        clock_t start = clock();
+        auto start = std::chrono::high_resolution_clock().now();
         status ret_status = moving_average(noise,out_signal,window_size);
-        clock_t stop = clock();
+        auto stop = std::chrono::high_resolution_clock().now();
 
         if(ret_status != completed)
         {
@@ -152,9 +153,9 @@ void speed_test()
             return;
         }
 
-        double seconds = (double)(stop - start) / CLOCKS_PER_SEC;
-
-        std::cout <<window_size << " " << noise.size()/seconds <<" samp/sec" << std::endl;
+        std::chrono::microseconds diff_us = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+        double run_time = noise.size() / 1e-6 * diff_us.count();
+        std::cout <<window_size << " " << run_time <<" samp/sec" << std::endl;
         window_size<<=1;
     }
 
