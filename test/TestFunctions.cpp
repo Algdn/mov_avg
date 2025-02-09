@@ -91,6 +91,12 @@ bool check_impulse_mov_avg()
     impulse[WINDOW_SIZE - 1] = 1;
     std::vector<float> impulse_h;
     status ret = moving_average(impulse,impulse_h,WINDOW_SIZE);
+
+    if(ret != completed)
+    {
+        return false;
+    }
+
     float ret_data = 0;
     // Для ограничения фильтра по степеням 2 должно быть равенство по float.
     for(auto i: impulse_h)
@@ -142,7 +148,7 @@ void speed_test()
 
         if(ret_status != completed)
         {
-            std::cout << "Test fail:" << ret_status << "\n";
+            std::cout << "Test fail:" << ret_status << std::endl;
             return;
         }
 
