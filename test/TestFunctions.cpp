@@ -156,9 +156,8 @@ void speed_test_tmplt(std::vector<double>& time, std::vector<int>* window = null
 
         std::chrono::microseconds diff_us = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
         double run_time = noise.size() * diff_us.count() / 1e-6;
-        std::cout <<window_size << " " << run_time <<" samp/sec" << std::endl;
 
-        if(!window)
+        if(window)
         {
             window->push_back(window_size);
         }
@@ -171,6 +170,22 @@ void speed_test_tmplt(std::vector<double>& time, std::vector<int>* window = null
     return;
 }
 
+#include <sstream>
+template <typename T>
+std::string vectorToCsvRow(const std::vector<T>& vec, std::string& out_str, const std::string& delimiter) {
+    //...
+    std::stringstream ss;
+    for(size_t i = 0; i < vec.size(); ++i)
+    {
+      if(i != 0)
+        ss << delimiter;
+      ss << vec[i];
+    }
+    out_str += ss.str();
+}
+
+#include <fstream>
+
 void speed_test()
 {
     std::vector<double> time_float;
@@ -181,4 +196,30 @@ void speed_test()
     speed_test_tmplt<double>(time_double);
 
 
+    std::string str_csv;
+    vectorToCsvRow(window,str_csv,";");
+    str_csv.insert(0,"Window size;");
+    str_csv.push_back('\n');
+
+    str_csv.append("Double data;");
+    vectorToCsvRow(time_float,str_csv,";");
+    str_csv.push_back('\n');
+
+    str_csv.append("Float data;");
+    vectorToCsvRow(time_double,str_csv,";");
+    str_csv.push_back('\n');
+
+    for(auto& symbol: str_csv)
+    {
+        if(symbol == '.')
+        {
+            symbol = ',';
+        }
+    }
+
+    std::ofstream outfile ("test_result.csv");
+    outfile << str_csv;
+    outfile.close();
+
+    return;
 }
