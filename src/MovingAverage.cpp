@@ -48,6 +48,11 @@ status moving_average(const std::vector<T>&in_data, std::vector<T>&out_data, con
         step_offest++;
     }
 
+    for(auto& d: out_data)
+    {
+        d = d/window_size;
+    }
+
     return completed;
 }
 
