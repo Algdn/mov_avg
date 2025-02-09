@@ -11,6 +11,8 @@ bool check_periodic_mov_avg();
 // Тест валидности работы функции скользящего среднего через импульсную характеристику
 bool check_impulse_mov_avg();
 
+void speed_test();
+
 // Вспомогательные тестовые функции
 bool create_chainsaw_signal(std::vector<int>& chainsaw, int& window);
 

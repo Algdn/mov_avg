@@ -108,3 +108,52 @@ bool check_impulse_mov_avg()
     std::cout << "Impulse test with window size " << WINDOW_SIZE << " passed" << "\n";
     return true;
 }
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <map>
+#include <random>
+#include <string>
+void speed_test()
+{
+    std::vector<float> noise;
+
+    {
+        std::random_device rd{};
+        std::mt19937 gen{rd()};
+        const float mean = 0;
+        const float deviation = 10;
+        std::normal_distribution<float> d{mean,deviation};
+        auto random_value = [&d, &gen]{ return d(gen); };
+
+        const int samples = 1e5;
+        noise.reserve(samples);
+        while(noise.size() < samples)
+        {
+            noise.push_back(random_value());
+        }
+    }
+
+    int window_size = 2;
+    while(window_size <= 1<<16)
+    {
+        std::vector<float> out_signal(noise.size());
+        clock_t start = clock();
+        status ret_status = moving_average(noise,out_signal,window_size);
+        clock_t stop = clock();
+
+        if(ret_status != completed)
+        {
+            std::cout << "Test fail:" << ret_status << "\n";
+            return;
+        }
+
+        double seconds = (double)(stop - start) / CLOCKS_PER_SEC;
+
+        std::cout <<window_size << " " << /*noise.size()/*/seconds <<" samp/sec" << "\n";
+        window_size<<=1;
+    }
+
+    return;
+}

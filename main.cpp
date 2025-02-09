@@ -11,6 +11,8 @@ int main()
         FAIL_IF(!check_periodic_mov_avg());
         FAIL_IF(!check_impulse_mov_avg());
     }
-        std::cout << "all tests passed\n";
+
+    std::cout << "all tests passed\n";
+    speed_test();
     return 0;
 }
