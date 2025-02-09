@@ -1,6 +1,7 @@
 #include <TestFunctions.h>
 #include <iostream>
 #include <ctime>
+#include <random>
 
 template <typename T> void vec_print(const std::vector<T>& vec){for(const auto& item:vec){std::cout<<item << " ";} std::cout<<std::endl;}
 
@@ -109,19 +110,15 @@ bool check_impulse_mov_avg()
     return true;
 }
 
-#include <cmath>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <random>
-#include <string>
+
 void speed_test()
 {
     std::vector<float> noise;
 
     {
         std::random_device rd{};
-        std::mt19937 gen{rd()};
+        int rand_seed = static_cast<int>(rand());
+        std::mt19937 gen{rand_seed};
         const float mean = 0;
         const float deviation = 10;
         std::normal_distribution<float> d{mean,deviation};
@@ -136,7 +133,7 @@ void speed_test()
     }
 
     int window_size = 2;
-    while(window_size <= 1<<16)
+    while(window_size <= 256)
     {
         std::vector<float> out_signal(noise.size());
         clock_t start = clock();
@@ -151,7 +148,7 @@ void speed_test()
 
         double seconds = (double)(stop - start) / CLOCKS_PER_SEC;
 
-        std::cout <<window_size << " " << /*noise.size()/*/seconds <<" samp/sec" << "\n";
+        std::cout <<window_size << " " << noise.size()/seconds <<" samp/sec" << std::endl;
         window_size<<=1;
     }
 
