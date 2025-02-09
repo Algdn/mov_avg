@@ -118,17 +118,18 @@ bool check_impulse_mov_avg()
 
 #include <chrono>
 
-void speed_test()
+template <typename T>
+void speed_test_tmplt(std::vector<double>& time, std::vector<int>* window = nullptr)
 {
-    std::vector<float> noise;
+    std::vector<T> noise;
 
     {
         std::random_device rd{};
         int rand_seed = static_cast<int>(rand());
         std::mt19937 gen{rand_seed};
-        const float mean = 0;
-        const float deviation = 10;
-        std::normal_distribution<float> d{mean,deviation};
+        const T mean = 0.0;
+        const T deviation = 10.0;
+        std::normal_distribution<T> d{mean,deviation};
         auto random_value = [&d, &gen]{ return d(gen); };
 
         const int samples = 1e6;
@@ -142,7 +143,7 @@ void speed_test()
     int window_size = 2;
     while(window_size <= 256)
     {
-        std::vector<float> out_signal(noise.size());
+        std::vector<T> out_signal(noise.size());
         auto start = std::chrono::high_resolution_clock().now();
         status ret_status = moving_average(noise,out_signal,window_size);
         auto stop = std::chrono::high_resolution_clock().now();
@@ -154,10 +155,30 @@ void speed_test()
         }
 
         std::chrono::microseconds diff_us = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-        double run_time = noise.size() / 1e-6 * diff_us.count();
+        double run_time = noise.size() * diff_us.count() / 1e-6;
         std::cout <<window_size << " " << run_time <<" samp/sec" << std::endl;
+
+        if(!window)
+        {
+            window->push_back(window_size);
+        }
+
+        time.push_back(run_time);
+
         window_size<<=1;
     }
 
     return;
+}
+
+void speed_test()
+{
+    std::vector<double> time_float;
+    std::vector<int> window;
+    speed_test_tmplt<float>(time_float,&window);
+
+    std::vector<double> time_double;
+    speed_test_tmplt<double>(time_double);
+
+
 }
