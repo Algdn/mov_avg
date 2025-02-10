@@ -155,7 +155,7 @@ void speed_test_tmplt(std::vector<double>& time, std::vector<int>* window = null
         }
 
         std::chrono::microseconds diff_us = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-        double run_time = noise.size() * diff_us.count() / 1e-6;
+        double run_time = noise.size() / (diff_us.count() / 1e6);
 
         if(window)
         {
